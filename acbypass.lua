@@ -1,11 +1,4 @@
---[[
-	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
-]]
---Gatekeeping is for the weak
----- atrexus
-
-
-local scanned = {} -- prevent infinite loops
+local scanned = {}
 local ReplicatedStorage = cloneref(game:GetService("ReplicatedStorage"))
 local Players = cloneref(game:GetService("Players"))
 local FindFunc = loadstring(game:HttpGet("https://raw.githubusercontent.com/Awakenchan/GcViewerV2/refs/heads/main/Utility/FindFunction.lua"))()
@@ -35,7 +28,7 @@ local function deepScan(value)
     if isRemote(value) then
         if not value:IsDescendantOf(ReplicatedStorage) then
             hookRemote(value)
-            local Old -- dont really need this hook but it does disable basic ac in this ac
+            local Old
             Old = hookfunction(getrenv().coroutine.wrap, function(...)
                 if not checkcaller() then
                     print(...,getfenv(2).script)
@@ -58,7 +51,7 @@ local function deepScan(value)
         end
     end
 end
--- ac function has constant for remote and its not parent of replicatedstorage but rather all other
+
 for _, obj in next, getgc(true) do
     if typeof(obj) == "function" and islclosure(obj) and not isexecutorclosure(obj) then
         deepScan(obj)
